@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 
 var entryValues = ReadEntryValuesFromFile();
-var result = CalculateMaxcaloriesCarriedByElf(entryValues);
+var result = CalculateMaxcaloriesCarriedByElf_DayOne(entryValues);
 Console.WriteLine($"The most amount of calories ({result.amount}) is carried by elf {result.elf+1}");
 
 Dictionary<int, List<int>> ReadEntryValuesFromFile()
@@ -31,7 +31,7 @@ Dictionary<int, List<int>> ReadEntryValuesFromFile()
     return result;
 }
 
-(int amount, int elf) CalculateMaxcaloriesCarriedByElf(Dictionary <int, List<int>> calorieList)
+(int amount, int elf) CalculateMaxcaloriesCarriedByElf_DayOne(Dictionary <int, List<int>> calorieList)
 {
     int maxCalorie = 0;
     int elf = 0;
