@@ -2,8 +2,15 @@
 using System.Runtime.CompilerServices;
 
 var entryValues = ReadEntryValuesFromFile();
-var result = CalculateMaxcaloriesCarriedByElf_DayOne(entryValues);
-Console.WriteLine($"The most amount of calories ({result.amount}) is carried by elf {result.elf+1}");
+var dayOne_PartOne = CalculateMaxcaloriesCarriedByElf_DayOne_PartOne(entryValues);
+Console.WriteLine($"Day One - Part One Result : The most amount of calories ({dayOne_PartOne.amount}) is carried by elf {dayOne_PartOne.elf+1}");
+
+var dayOne_PartTwo = CalculateMaxcaloriesCarriedByToThreeElf_DayOne_PartTwo(entryValues);
+Console.WriteLine("");
+Console.WriteLine("Day One - Part Two Result : The elves who are top three in calorie amounts are : ");
+foreach((int amount, int elf) elf in dayOne_PartTwo)
+    Console.WriteLine($"     ({elf.amount}) calories carried by elf {elf.elf + 1}");
+Console.WriteLine($"The sum of calories carried by the three is :  {dayOne_PartTwo.Sum(x=> x.amount)}");
 
 Dictionary<int, List<int>> ReadEntryValuesFromFile()
 {
@@ -31,7 +38,7 @@ Dictionary<int, List<int>> ReadEntryValuesFromFile()
     return result;
 }
 
-(int amount, int elf) CalculateMaxcaloriesCarriedByElf_DayOne(Dictionary <int, List<int>> calorieList)
+(int amount, int elf) CalculateMaxcaloriesCarriedByElf_DayOne_PartOne(Dictionary <int, List<int>> calorieList)
 {
     int maxCalorie = 0;
     int elf = 0;
@@ -44,7 +51,12 @@ Dictionary<int, List<int>> ReadEntryValuesFromFile()
             elf = elfCalorie.Key;
         }
     }
-    result.elf = elf;
-    result.amount = maxCalorie;
-    return result;
+    return (elf, maxCalorie);
 }
+
+List<(int amount, int elf)> CalculateMaxcaloriesCarriedByToThreeElf_DayOne_PartTwo(Dictionary<int, List<int>> calorieList)
+{
+    var sortedList = from entry in calorieList orderby entry.Value.Sum() descending select (entry.Value.Sum(), entry.Key);
+    return sortedList.Take(3).ToList();
+}
+
