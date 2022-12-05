@@ -2,6 +2,9 @@
 var entryValues = ReadEntryValuesFromFile();
 var score = CalculateScoreAccordingToGuide_DayTwo_PartOne(entryValues);
 Console.WriteLine($"Day Two - Part One Result : My total score according to the guide is {score}");
+Console.WriteLine("");
+var scoreTwo = CalculateScoreAccordingToGuide_DayTwo_PartTwo(entryValues);
+Console.WriteLine($"Day Two - Part Two Result : My total score according to the guide should be {scoreTwo}");
 
 List<(string , string)> ReadEntryValuesFromFile()
 {
@@ -53,4 +56,56 @@ int GetScoreForEachRound(int opponentPlay, int myPlay)
 int CalculateScoreAccordingToGuide_DayTwo_PartOne(List<(string opponentPlay, string myPlay)> guide)
 {
     return guide.Sum(x => GetScoreForEachRound(ConvertStringValueToInt(x.opponentPlay), ConvertStringValueToInt(x.myPlay)));
+}
+
+(int opponentPlay, int myPlay) ConvertOutcomeToGuide((string opponentPlay, string desiredOutcome) value)
+{
+    var opponent = 0;
+    switch (value.opponentPlay)
+    {
+        case "A": opponent = 1; break;
+
+        case "B": opponent = 2; break;
+
+        case "C": opponent = 3; break;
+
+        default: opponent = 0; break;
+    }
+    var me = 0;
+    switch (value.desiredOutcome)
+    {
+        case "X":
+            if (opponent == 1)
+                me = 3;
+            else
+                me = opponent - 1;
+            break;
+
+        case "Y": 
+            me = opponent; 
+            break;
+
+        case "Z":
+            if (opponent == 3)
+                me = 1;
+            else
+                me = opponent + 1;
+            break;
+
+        default: 
+            opponent = 0; 
+            break;
+    }
+
+    return (opponent, me);
+}
+
+int CalculateScoreAccordingToGuide_DayTwo_PartTwo(List<(string opponentPlay, string desiredOutcome)> guide)
+{
+    return guide.Sum(x =>
+    {
+        var (opponentPlay, myPlay) = ConvertOutcomeToGuide((x.opponentPlay, x.desiredOutcome));
+        return GetScoreForEachRound(opponentPlay, myPlay);
+        }
+    );
 }
