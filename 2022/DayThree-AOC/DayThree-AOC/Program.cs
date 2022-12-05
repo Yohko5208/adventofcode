@@ -3,8 +3,11 @@ using System.ComponentModel.DataAnnotations;
 using static System.Formats.Asn1.AsnWriter;
 
 var entryValue = ReadEntryValuesFromFile();
-var prioritySum = GetSumOfPriotitiesFor_DayThree_PartOne(entryValue);
+var prioritySum = GetSumOfPriotities_DayThree_PartOne(entryValue);
 Console.WriteLine($"Day Three - Part One Result : The sum of all priorities is : {prioritySum}");
+Console.WriteLine("");
+var prioritySumOfBadge = GetSumOfPriotitiesOfBadges_DayThree_PartTwo(entryValue);
+Console.WriteLine($"Day Three - Part Two Result : The sum of all priorities is : {prioritySumOfBadge}");
 Console.WriteLine("");
 List<string> ReadEntryValuesFromFile()
 {
@@ -24,9 +27,19 @@ List<string> ReadEntryValuesFromFile()
     return result;
 }
 
-int GetSumOfPriotitiesFor_DayThree_PartOne(List<string> ruckSacks)
+int GetSumOfPriotities_DayThree_PartOne(List<string> ruckSacks)
 {
     return ruckSacks.Sum(x => GetCommonItemsFromEachRuckSack(x).Sum(commonItems => ConvertCharToIntValue(commonItems)));
+}
+
+int GetSumOfPriotitiesOfBadges_DayThree_PartTwo(List<string> ruckSacks)
+{
+    return ruckSacks.Chunk(3).Sum(x => ConvertCharToIntValue(GetBadgeOfGroup(x)));
+}
+
+char GetBadgeOfGroup(string[] groupOfElves)
+{
+    return groupOfElves.ElementAt(0).Intersect(groupOfElves.ElementAt(1)).Intersect(groupOfElves.ElementAt(2)).First();
 }
 
 char[] GetCommonItemsFromEachRuckSack(string rucksack)
