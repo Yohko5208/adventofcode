@@ -6,6 +6,10 @@ var entryValue = ReadEntryValuesFromFile();
 var number = GetNumberOfAssignmentsFullyContainedInAnother_DayFour_PartOne(entryValue);
 Console.WriteLine($"Day Three - Part One Result : The number of assignement pairs where one range fully contains the other is : {number}");
 Console.WriteLine("");
+
+var numberOfAssignementsOverlapping = GetNumberOfAssignmentsFullyContainedInAnother_DayFour_PartTwo(entryValue);
+Console.WriteLine($"Day Three - Part Two Result : The number of assignement pairs where one range fully contains the other is : {numberOfAssignementsOverlapping}");
+Console.WriteLine("");
 List<string> ReadEntryValuesFromFile()
 {
     var directory = AppDomain.CurrentDomain.BaseDirectory;
@@ -31,6 +35,18 @@ int GetNumberOfAssignmentsFullyContainedInAnother_DayFour_PartOne(List<string> e
     foreach ( var entry in entryInNumbers )
     {
         if (IsOneAssignementSubsetOfAnother(entry.ElementAt(0), entry.ElementAt(1)))
+            result++;
+    }
+    return result;
+}
+
+int GetNumberOfAssignmentsFullyContainedInAnother_DayFour_PartTwo(List<string> entryValues)
+{
+    var entryInNumbers = ConvertEntryToNumber(entryValues);
+    var result = 0;
+    foreach (var entry in entryInNumbers)
+    {
+        if (entry.ElementAt(0).Intersect(entry.ElementAt(1)).Any())
             result++;
     }
     return result;
